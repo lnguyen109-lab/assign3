@@ -1,0 +1,24 @@
+Tic Tac Toe - Notes on Installation and Coding
+-------------------------------------
+Installation
+-------------------------------------
+
+To start this project, I had to first figure out how to install Ubuntu as a way for me to clone the repository onto my computer and push changes automatically.
+Since I had my virtualization options disabled for my Windows laptop, I first had to tamper with my control panel and change my DNScache settings in my BIOS files
+so that I could install Ubuntu, which required multiple reboots due to constant troubleshooting. As it turns out, a lot of my DNS-related settings were disabled as
+part of an old method I used to block ads across websites.
+
+Once I downloaded Ubuntu, I used sudo commands to locally download Git and Node.js into my computer so that I can use React commands and clone the repository of this
+assignment. Using this clone, I could locally push my own changes without intering with the original repository.
+
+-------------------------------------
+Coding: Tic-Tac-Toe
+-------------------------------------
+
+For this assignment, I started off by following a tutorial on how to build a simple tic-tac-toe game using React. All code is written in the /src/App.js file.
+
+Began by defining a default function called Square, which returns a displayable JSX button from the square CSS class
+
+
+
+
