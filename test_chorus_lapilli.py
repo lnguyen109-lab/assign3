@@ -155,6 +155,90 @@ class TestChorusLapilli(unittest.TestCase):
         tiles[0].click()
         self.assertTileIs(tiles[0], self.SYMBOL_X)
 
+    # Added Tests
+    def test_check_center(self):
+        '''Check to see if an error occurs if attempting to click the center tile without a win condition in chorus lapilli'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)    
+
+
+    
+    def test_game_won(self):
+        '''Check to see if clicking is disabled after a winner has been declared'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        self.assertTileIs(tiles[0], self.SYMBOL_BLANK)
+        tiles[0].click()
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+
+        self.assertTileIs(tiles[2], self.SYMBOL_BLANK)
+        tiles[2].click()
+        self.assertTileIs(tiles[2], self.SYMBOL_O)
+
+        self.assertTileIs(tiles[4], self.SYMBOL_BLANK)
+        tiles[4].click()
+        self.assertTileIs(tiles[4], self.SYMBOL_X)
+
+        self.assertTileIs(tiles[5], self.SYMBOL_BLANK)
+        tiles[5].click()
+        self.assertTileIs(tiles[5], self.SYMBOL_O)
+
+        self.assertTileIs(tiles[8], self.SYMBOL_BLANK)
+        tiles[8].click()
+        self.assertTileIs(tiles[8], self.SYMBOL_X)
+
+        tiles[0].click()
+        tiles[1].click()
+        tiles[2].click()
+        tiles[3].click()
+        tiles[4].click()
+        tiles[5].click()
+        tiles[6].click()
+        tiles[7].click()
+        tiles[8].click()
+
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+        self.assertTileIs(tiles[1], self.SYMBOL_BLANK)
+        self.assertTileIs(tiles[2], self.SYMBOL_O)
+        self.assertTileIs(tiles[3], self.SYMBOL_BLANK)
+        self.assertTileIs(tiles[4], self.SYMBOL_X)
+        self.assertTileIs(tiles[5], self.SYMBOL_O)
+        self.assertTileIs(tiles[6], self.SYMBOL_BLANK)
+        self.assertTileIs(tiles[7], self.SYMBOL_BLANK)
+        self.assertTileIs(tiles[8], self.SYMBOL_X)
+
+    def test_non_adjacent(self):
+        '''Check to see if an error occurs if attempting to click a non-adjacent square in chorus lapilli'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        self.assertTileIs(tiles[0], self.SYMBOL_BLANK)
+        tiles[0].click()
+        self.assertTileIs(tiles[2], self.SYMBOL_BLANK)
+        tiles[2].click()
+        self.assertTileIs(tiles[3], self.SYMBOL_BLANK)
+        tiles[3].click()
+        self.assertTileIs(tiles[5], self.SYMBOL_BLANK)
+        tiles[5].click()
+        self.assertTileIs(tiles[8], self.SYMBOL_BLANK)
+        tiles[8].click()
+        self.assertTileIs(tiles[6], self.SYMBOL_BLANK)
+        tiles[6].click()
+
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+        tiles[0].click()
+        self.assertTileIs(tiles[7], self.SYMBOL_BLANK)
+        tiles[7].click()
+        self.assertTileIs(tiles[3], self.SYMBOL_X)
+        tiles[3].click()
+        self.assertTileIs(tiles[6], self.SYMBOL_O)
+        tiles[6].click()
+        
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+        self.assertTileIs(tiles[1], self.SYMBOL_BLANK)
+        self.assertTileIs(tiles[2], self.SYMBOL_O)
+        self.assertTileIs(tiles[3], self.SYMBOL_X)
+        self.assertTileIs(tiles[4], self.SYMBOL_BLANK)
+        self.assertTileIs(tiles[5], self.SYMBOL_O)
+        self.assertTileIs(tiles[6], self.SYMBOL_BLANK)
+        self.assertTileIs(tiles[7], self.SYMBOL_O)
+        self.assertTileIs(tiles[8], self.SYMBOL_X)
 
 # ================= [DO NOT MAKE ANY CHANGES BELOW THIS LINE] =================
 
