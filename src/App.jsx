@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 function Square({ value, onSquareClick }) {
   return (
@@ -8,20 +8,26 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-export default function Board({ xIsNext, squares, onPlay }) {
+export default function Board() {
+  // Set variables
   const [xIsNext, setXIsNext] = useState(true);
-  const [squares, setSquares] = useState([Array(9).fill(null)]);
-  const [currentMove, setCurrentMove] = useState(0);
-  const [prevSpot, setPrevSpot] = useState(-1);
-  const [spotChosen, setSpotChosen] = useState(false);
-  const [winningMove, setWinningMove] = useState(false);
-  
-  //const xIsNext = currentMove % 2 === 0;
-  //const currentSquares = squares[currentMove];
+  const [squares, setSquares] = useState(Array(9).fill(null));
+  const [turnCount, setTurnCount] = useState(0);
+  const [counter, setCounter] = useState(false);
+  const [selection, setSelection] = useState(null);
+  const [message, setMessage] = useState("");
 
-  
-  
+  const chorusLapilliStart = turnCount === 6;
+  let status;
+
   function handleClick(i) {
+    if (chorusLapilliStart) {
+        chorusLapilli(i);
+      } else {
+        tictactoe(i);
+      }
+    }
+// CHECK
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
@@ -34,7 +40,6 @@ export default function Board({ xIsNext, squares, onPlay }) {
     onPlay(nextSquares);
   }
 
-  // Show if there is a winner or whose turn is next based on state of the board
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
@@ -65,20 +70,23 @@ export default function Board({ xIsNext, squares, onPlay }) {
   );
 }
 
-// (PLEASE CHANGE, NO LONGER DEFAULT FUNCTION)
 function Game() {
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext = currentMove % 2 === 0;
+  const currentSquares = history[currentMove];
 
   function handlePlay(nextSquares) {
-    const nextSquare = [...square.slice(0, currentMove + 1), nextSquares];
-    setSquares(nextSquare);
-    setCurrentMove(nextSquare.length - 1);
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    setHistory(nextHistory);
+    setCurrentMove(nextHistory.length - 1);
   }
 
   function jumpTo(nextMove) {
     setCurrentMove(nextMove);
   }
 
-  const moves = squares.map((squares, move) => {
+  const moves = history.map((squares, move) => {
     let description;
     if (move > 0) {
       description = 'Go to move #' + move;
@@ -104,20 +112,6 @@ function Game() {
   );
 }
 
-// Checks if there is currently a piece in the center
-  function centerCheck() {
-      if (xIsNext && squares[4] === 'X') {
-          return true;
-      } 
-        
-      if (!xIsNext && squares[4] === 'O') {
-          return true;
-      }
-      return false;
-  }
-
-
-// Checks board if winning combinations are present
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -136,26 +130,4 @@ function calculateWinner(squares) {
     }
   }
   return null;
-}
-
-// Ensures movement of a piece happens in an adjacent square only
-function adjacentCheck(i, j) {
-  if (i === 0)
-    return j === 1 || j === 3 || j === 4;
-  else if (i === 1)
-    return j === 0 || j === 2 || j === 4 || j === 3 || j === 5;
-  else if (i === 2)
-    return j === 1 || j === 4 || j === 5;
-  else if (i === 3)
-    return j === 0 || j === 1 || j === 4 || j === 6 || j === 7;
-  else if (i === 4) 
-    return true;
-  else if (i === 5)
-    return j === 1 || j === 2 || j === 4 || j === 7 || j === 8;
-  else if (i === 6)
-    return j === 3 || j === 4 || j === 7;
-  else if (i === 7)
-    return j === 3 || j === 4 || j === 5 || j === 6 || j === 8;
-  else if (i === 8)
-    return j === 4 || j === 5 || j === 7;
 }
