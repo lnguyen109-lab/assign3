@@ -1,35 +1,3 @@
-import * as React from 'react'
-import * as ReactBootstrap from 'react-bootstrap'
-
-const { Badge, Button, Card } = ReactBootstrap
-
-export default function App() {
-  const [name, setName] = React.useState('World')
-
-  return (
-    <div className="container py-4">
-      <Card className="starter-card shadow-sm">
-        <Card.Body className="p-4">
-          <h1 className="greeting display-6 fw-bold">Hello, {name}!</h1>
-          <p className="mb-3 text-secondary">
-            This starter is set up to match the React Essentials notes more closely.
-            For the assignment, build the tic-tac-toe tutorial in this file and leave
-            mounting to <code>src/main.jsx</code>.
-          </p>
-          <div className="d-flex gap-2 flex-wrap align-items-center">
-            <Button variant="primary" onClick={() => setName('CS 35L')}>
-              Set example name
-            </Button>
-            <Badge bg="secondary" pill>
-              ReactBootstrap ready
-            </Badge>
-          </div>
-        </Card.Body>
-      </Card>
-    </div>
-  )
-}
-
 import { useState } from 'react';
 
 function Square({ value, onSquareClick }) {
@@ -40,7 +8,19 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-function Board({ xIsNext, squares, onPlay }) {
+export default function Board({ xIsNext, squares, onPlay }) {
+  const [xIsNext, setXIsNext] = useState(true);
+  const [squares, setSquares] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const [prevSpot, setPrevSpot] = useState(-1);
+  const [spotChosen, setSpotChosen] = useState(false);
+  const [winningMove, setWinningMove] = useState(false);
+  
+  //const xIsNext = currentMove % 2 === 0;
+  //const currentSquares = squares[currentMove];
+
+  
+  
   function handleClick(i) {
     if (calculateWinner(squares) || squares[i]) {
       return;
@@ -54,6 +34,7 @@ function Board({ xIsNext, squares, onPlay }) {
     onPlay(nextSquares);
   }
 
+  // Show if there is a winner or whose turn is next based on state of the board
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
@@ -84,23 +65,20 @@ function Board({ xIsNext, squares, onPlay }) {
   );
 }
 
-export default function Game() {
-  const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [currentMove, setCurrentMove] = useState(0);
-  const xIsNext = currentMove % 2 === 0;
-  const currentSquares = history[currentMove];
+// (PLEASE CHANGE, NO LONGER DEFAULT FUNCTION)
+function Game() {
 
   function handlePlay(nextSquares) {
-    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
-    setHistory(nextHistory);
-    setCurrentMove(nextHistory.length - 1);
+    const nextSquare = [...square.slice(0, currentMove + 1), nextSquares];
+    setSquares(nextSquare);
+    setCurrentMove(nextSquare.length - 1);
   }
 
   function jumpTo(nextMove) {
     setCurrentMove(nextMove);
   }
 
-  const moves = history.map((squares, move) => {
+  const moves = squares.map((squares, move) => {
     let description;
     if (move > 0) {
       description = 'Go to move #' + move;
@@ -126,6 +104,20 @@ export default function Game() {
   );
 }
 
+// Checks if there is currently a piece in the center
+  function centerCheck() {
+      if (xIsNext && squares[4] === 'X') {
+          return true;
+      } 
+        
+      if (!xIsNext && squares[4] === 'O') {
+          return true;
+      }
+      return false;
+  }
+
+
+// Checks board if winning combinations are present
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -144,4 +136,26 @@ function calculateWinner(squares) {
     }
   }
   return null;
+}
+
+// Ensures movement of a piece happens in an adjacent square only
+function adjacentCheck(i, j) {
+  if (i === 0)
+    return j === 1 || j === 3 || j === 4;
+  else if (i === 1)
+    return j === 0 || j === 2 || j === 4 || j === 3 || j === 5;
+  else if (i === 2)
+    return j === 1 || j === 4 || j === 5;
+  else if (i === 3)
+    return j === 0 || j === 1 || j === 4 || j === 6 || j === 7;
+  else if (i === 4) 
+    return true;
+  else if (i === 5)
+    return j === 1 || j === 2 || j === 4 || j === 7 || j === 8;
+  else if (i === 6)
+    return j === 3 || j === 4 || j === 7;
+  else if (i === 7)
+    return j === 3 || j === 4 || j === 5 || j === 6 || j === 8;
+  else if (i === 8)
+    return j === 4 || j === 5 || j === 7;
 }
