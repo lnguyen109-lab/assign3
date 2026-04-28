@@ -13,18 +13,20 @@ export default function Board() {
   const [xIsNext, setXIsNext] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [turnCount, setTurnCount] = useState(0);
-  const [counter, setCounter] = useState(false); // Change to movingPiece, setMovingPiece
+  const [movingPiece, setMovingPiece] = useState(false); // Change to movingPiece, setMovingPiece
   const [selection, setSelection] = useState(null);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("Current mode: Tic-Tac-Toe");
   let status;
 
   // Validates every click on the board, transitions to chorus lapilli after six turns
   function handleClick(i) {
     if (calculateWinner(squares)) {
+      setMessage("");
       return;
     }
 
     if (turnCount < 6) {
+      setMessage("Current mode: Tic-Tac-Toe");
       if (squares[i]) {
         return;
       }
@@ -38,11 +40,14 @@ export default function Board() {
       setXIsNext(!xIsNext);
       setTurnCount((prev) => prev + 1);
     } else {
-      if (counter) {
+      if (movingPiece) {
         moveSquare(i);
       } else {
         select(i);
       }
+    }
+    if (turnCount == 5) {
+      setMessage("Current mode: Chorus Lapilli");
     }
   }
 
@@ -51,11 +56,11 @@ export default function Board() {
     if (xIsNext && squares[i] === "X") {
       setMessage("Selected an X");
       setSelection(i);
-      setCounter(true);
+      setMovingPiece(true);
     } else if (!xIsNext && squares[i] === "O") {
       setMessage("Selected an O");
       setSelection(i);
-      setCounter(true);
+      setMovingPiece(true);
     }
   }
 
@@ -63,7 +68,7 @@ export default function Board() {
   function moveSquare(i) {
     if (squares[i] || !adjacentCheck(selection).includes(i)) {
       setMessage("Error: Select another spot");
-      setCounter(false);
+      setMovingPiece(false);
       return;
     }
 
@@ -82,9 +87,10 @@ export default function Board() {
     } else {
       setSquares(nextSquares);
       setXIsNext(!xIsNext);
-      setMessage("");
+      setMessage("Current mode: Chorus Lapilli");
     }
-    setCounter(false);
+
+    setMovingPiece(false);
   }
 
   // If there is a piece in the center, force player to move that piece unless they can win
