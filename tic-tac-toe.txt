@@ -37,7 +37,7 @@ Since React components can only return a single JSX element per line, used <> an
 
 From there, used <div className="board-row"> tags to separate the squares into a grid instead of a straight line
 Changed function name to "Board" instead of "Square" to better reflect design
-Rendered the JS variable {value} in the Square function and 
+Rendered the JS variable {value} in the Square function and used it to 
 
 
 
