@@ -1,0 +1,60 @@
+Board default function
+----------------------
+- Changed the default function to Board instead of Game and made it exportable since all gameplay functions are now a part of the board.
+- Moved const variables under Board function instead of function parameters, as well as added consts for selecting a piece, checking if the player is in moving pieces mode, and chosen spot to move the piece to.
+- Added a const variable to display winner and error messages if the player attempts to move to invalid spots.
+- Changed the history variable to squares to make it easier to read from a programmer perspective, as well as the fact that they no longer map the moves.
+
+----------------------
+handleClick function
+----------------------
+- Redid the handleClick function using the variable turnCount as a counter such that it checks whether the sixth move has been played out (three pieces of each type are now on the board) and transitions 
+from tic-tac-toe to chorus lapilli rules such that no new pieces are put down, only moved.
+- Displays an extra message for when the game is in tic-tac-toe mode and when it is in chorus lapilli mode (after 6 turns).
+- Tic-tac-toe is now a part of an if else loop so that no further pieces can be placed down after turn six.
+
+----------------------
+select function
+----------------------
+- Added this function to handle selecting a piece in chorus lapilli mode in order for it to be moved with the moveSquare function.
+- Uses the xIsNext variable to ensure that one player cannot move the pieces of the opposing player and can only select their own type of piece on their turn.
+- Displays an extra message when a selection has been made to let the player know they have selected a piece of their type.
+
+----------------------
+moveSquare function
+----------------------
+- Added this function to handle moving a piece to an adjacent spot in chorus lapilli mode after selecting it.
+- If the centerCheck function returns true and shows that the center is occupied (tile 4) while trying to move, return an error message instead of allowing the movement to happen unless the player will win.
+- If the spot the player wants to move the piece to is not adjacent to the current spot (square indexes checked by adjacentCheck), return an error message instead of allowing the movement.
+- If the spot the player wants to move the piece to is currently occupied by another piece of any type, do not allow the movement
+- If the player happens to make a winning move, end the game and use a message to display the winner by calling calculateWinner
+
+----------------------
+centerCheck function
+----------------------
+- Added this function to constantly check if there is a piece in the center 
+- If there is a piece in the center, return true and use moveSquare to force the player to vacate the center square if their piece is occupying it
+- Returns false if there is no piece in the center
+
+----------------------
+adjacentCheck function
+----------------------
+- Added this function to keep track of the indexes of all squares adjacent to each tile in the board to ensure that every chorus lapilli movement is valid.
+- For all 9 squares, lists out all the indexes of the adjacent tiles and returns them as a list using the i parameter
+- In moveSquare, if a player tries to move the piece to a tile that is not in the index list of the current tile, return an error message
+
+----------------------
+calculateWinner function
+----------------------
+- No changes to this function from its tic-tac-toe tutorial variant aside from using the let status command one more time.
+
+
+
+
+
+
+
+
+
+
+
