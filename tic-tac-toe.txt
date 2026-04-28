@@ -37,7 +37,34 @@ Since React components can only return a single JSX element per line, used <> an
 
 From there, used <div className="board-row"> tags to separate the squares into a grid instead of a straight line
 Changed function name to "Board" instead of "Square" to better reflect design
-Rendered the JS variable {value} in the Square function and used it to 
+Rendered the JS variable {value} in the Square function and used it to display an empty board to later be filled with values 1-9
+
+Created handleClick function to make the board interactive, confirmed that the clicks were registering properly by having each click return a "clicked!" message in the console after attaching an onClick command to the button element
+
+Imported the { useState } component from React library and replaced the {value} component with useState instead, so that it now returns value as a state
+Removed value props from the Square components created by the Board component and set the initial value as a const with [value, setValue] as components equal to setState(null)
+
+Replaced the "clicked!" console.log command to instead set the value to 'X' upon clicking on a square inside the board, causing an X to show up upon clicking
+Board function now declares a state variable called squares that defaults to an array of 9 nulls that corresponds with the 9 squares on the board
+Changed the board-row divs such that the value prop is passed down to each square that is clicked, so that the program registers that an X is now present on the board instead of a null empty space
+
+Removed the original onClick prop entirely from the Square component so that it can instead receive the {value} prop like before
+Added new onClick prop that calls a new function onSquareClick whenever a square is clicked on
+Connected the onSquareClick prop to the handleClick function in Board by passing the function to the Square component's onSquare prop
+
+Implemented the following code into the handleClick in order to update the state of the board within the array hidden in the program so that it knows where an X has been placed on the board and what squares remain empty; the slice() method creates this hidden copy of the array for the sript to reference
+
+const nextSquares = squares.slice();
+    nextSquares[0] = "X";
+    setSquares(nextSquares);
+
+Added parameter i component to the handleClick function so that any square can be clicked and updated to display an X instead of just the top left square
+Updated onSquareClick component to be able to pass and receive the updated i parameter from handleClick when the function is called, by using the arrow function () => handleClick(#) for each of the nine squares on the board using numbers 0-8 as array index values
+
+
+
+
+
 
 
 
