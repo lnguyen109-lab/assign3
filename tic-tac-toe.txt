@@ -61,13 +61,32 @@ const nextSquares = squares.slice();
 Added parameter i component to the handleClick function so that any square can be clicked and updated to display an X instead of just the top left square
 Updated onSquareClick component to be able to pass and receive the updated i parameter from handleClick when the function is called, by using the arrow function () => handleClick(#) for each of the nine squares on the board using numbers 0-8 as array index values
 
+Updated Board and handleClick functions to operate with the boolean state variable [xIsNext, setXIsNext] in order to flip between placing an 'X' or 'O' value upon clicking a square and therefore moving to the next player's turn, which can be done by flipping xIsNext from true to false after every click, and vice versa
+Updated handleClick to return early if a square is already occupied so that clicking on one square that already displays a value will not overwrite that value with the other
 
+Created the calculateWinner function in order to p roperly end the game and decide on a winner by analyzing the copied array, which is done by checking the array and comparing its current values to manually written square lists of possible winning combinations that correspond to the indexes of the array
+The calculateWinner function uses a for loop to constantly check for a winner after every click and will return null if there is no winner, otherwise it will return whatever the value of the winning square list is on the array, being X or O
 
+Updated handleClick function to call calculateWinner every time a click occurs to check for a winner, in the same line as checking if a square is occupied or not
+Added a status prompt to display a string message on who the winner is based on what value is returned by the calculateWinner function
 
+Although the tic-tac-toe game is fully functional at this point, the tutorial provides more regarding adding an option to return to previous moves
 
+Created new top-level component function called Game that is now the new export default function above Board that contains the entire game history
+Used divs and board-row classes in order to render the Board function and therefore the board itself within the Game function
+Added the boolean [xIsNext, setXIsNext] and array [history, setHistory] useState variables to the Game function as well as a currentSquares component that has a value of history[history.length - 1] in order to read the previous squares arrays
 
+Changed Board function to receive xIsNext, squares, and onPlay as props and removed all useState variables as they are now parameters built into the function
+Inside handleClick function, added a call for onPlay so that the Game function updates when the user clicks a square
 
+Created the handlePlay function inside the Game function that rerenders the copied array, but uses history as a state variables with setHistory([...history, nextSquares]) instead of the Board component's setSquares function, as well as having it toggle xIsNext inside the function
+Added the array map method to transform the values recorded by the history variable into an array of React elements, including a moves variable that tracks all past squares arrays and a jumpTo function that allows the user to click a button to recreate the board using a map of the array at the time the button was mapped and created
+Fixed the key error created by the program being unable to differentiate the array React elements from one another by adding key={move} inside the list tag
 
+Created a new state variable called currentMove so that Game can track down what step of the game the user is currently viewing
+Updated jumpTo function inside the Game function to include setXIsNext(nextMove % 2 === 0) to indicate that the player will be using X if the number of moves passed is even
 
+Changed handlePlay function to remove all future array states if the user chose to go back in time to a previous move using const nextHistory = [...history.slice(0, currentMove + 1), nextSquares] so that only that portion of the history is kept, along with adding setCurrentMove(nextHistory.length - 1) to update currentMove to match the step number after going back in time
+Fixed Game function such that the currentSquares component now renders the last move, even after a time travel has occurred, by setting it to  history[currentMove]
 
-
+Changed the xIsNext component inside the Game function to const xIsNext = currentMove % 2 === 0 to avoid redundancy since this component will already know when the player is supposed to be using an X or an O, making any calls to setXIsNext unnecessary
